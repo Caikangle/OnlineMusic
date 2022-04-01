@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hust.music.dao.RankMapper">
+    <resultMap id="BaseResultMap" type="com.hust.music.domain.Rank">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="song_list_id" property="songListId" jdbcType="INTEGER"/>
+        <result column="consumer_id" property="consumerId" jdbcType="INTEGER"/>
+        <result column="score" property="score" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column">
+        id
+        ,song_list_id,consumer_id,score
+    </sql>
+
+    <sql id="tbl_name">
+        rank
+    </sql>
+
+    <insert id="insert">
+        insert into
+        <include refid="tbl_name"></include>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="songListId != null">
+                song_list_id,
+            </if>
+            <if test="consumerId != null">
+                consumer_id,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="songListId != null">
+                #{songListId},
+            </if>
+            <if test="consumerId != null">
+                #{consumerId},
+            </if>
+            <if test="score != null">
+                #{score},
+            </if>
+        </trim>
+    </insert>
+    <select id="selectScoreSum" resultType="java.lang.Integer">
+        select sum(score) from <include refid="tbl_name"></include>
+        where song_list_id = #{songListId}
+    </select>
+
+    <select id="selectRankNum" resultType="java.lang.Integer">
+        select count(*) from <include refid="tbl_name"></include>
+        where song_list_id = #{songListId}
+    </select>
+
+    <select id="getRank" resultType="java.lang.Integer">
+        select count(*) from <include refid="tbl_name"></include>
+        where song_list_id = #{songListId} and consumer_id = #{consumerId}
+    </select>
+
+</mapper>

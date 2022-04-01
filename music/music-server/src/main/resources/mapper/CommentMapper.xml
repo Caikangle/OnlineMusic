@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hust.music.dao.CommentMapper">
+    <resultMap id="BaseResultMap" type="com.hust.music.domain.Comment" >
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="TINYINT"/>
+        <result column="song_id" property="songId" jdbcType="INTEGER"/>
+        <result column="song_list_id" property="songListId" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="up" property="up" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="tbl_name">
+        comment
+    </sql>
+    <sql id="Base_Column">
+        id,user_id,type,song_id,song_list_id,content,create_time,up
+    </sql>
+    <insert id="insert">
+        insert into <include refid="tbl_name"></include>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="songId != null">
+                song_id,
+            </if>
+            <if test="songListId != null">
+                song_list_id,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            create_time,
+            <if test="up != null">
+                up,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="songId != null">
+                #{songId},
+            </if>
+            <if test="songListId != null">
+                #{songListId},
+            </if>
+            <if test="content != null">
+                #{content},
+            </if>
+            now(),
+            <if test="up != null">
+                #{up},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update">
+        update <include refid="tbl_name"></include>
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="songId != null">
+                song_id = #{songId},
+            </if>
+            <if test="songListId != null">
+                song_list_id = #{songListId},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="up != null">
+                up = #{up},
+            </if>
+        </set>
+            where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from <include refid="tbl_name"></include>
+        where id = #{id}
+    </delete>
+
+    <select id="selectByPrimaryKey" resultType="com.hust.music.domain.Comment">
+        select <include refid="Base_Column"></include>
+        from <include refid="tbl_name"></include>
+        where id = #{id}
+    </select>
+
+    <select id="allComment" resultType="com.hust.music.domain.Comment">
+        select <include refid="Base_Column"></include>
+        from <include refid="tbl_name"></include>
+    </select>
+
+    <select id="commentOfSongId" resultType="com.hust.music.domain.Comment">
+        select <include refid="Base_Column"></include>
+        from <include refid="tbl_name"></include>
+        where song_id = #{songId}
+    </select>
+
+    <select id="commentOfSongListId" resultType="com.hust.music.domain.Comment">
+        select <include refid="Base_Column"></include>
+        from <include refid="tbl_name"></include>
+        where song_list_id = #{songListId}
+    </select>
+
+
+</mapper>
